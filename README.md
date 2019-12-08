@@ -7,7 +7,7 @@
 - [Testing](#testing)
 - [Future Improvements](#future-improvements)
 - [GraphQL Endpoints](#graphql-endpoints)
-- [Examples](#examples)
+- [Examples](#usage-examples)
 
 ## Features
  - service for customers to create and update checkouts with total price
@@ -26,6 +26,9 @@
 2. `nvm install v12.8.1` install and use right version of node
 3. `npm install` install dependencies
 5. `npm run start` start job-ads-checkout-service, viola!
+6. Using a GraphQL client tool , run GrahpQL query onto ( look at usage examples below )
+
+   http://localhost:9087/graphql
 
 ## Architecture
 
@@ -113,7 +116,9 @@
  - implement dataloader not implemented for external calls. Should for ..
  - implement cache for improve performance
 
-## Examples
+## Usage Examples
+
+Phttp://localhost:9087/graphql
 
 - Get Checkout
 
