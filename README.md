@@ -118,6 +118,7 @@
 ## Future Improvements
  - implement dataloader not implemented for external calls. Should for ..
  - implement cache for improve performance
+ - implement logger
 
 ## Usage Examples
 
