@@ -50,3 +50,6 @@ test/performance/nockFixtures/
 /test/support/nockFixtures
 /dist/
 /.nyc_output/
+
+*compiled.js
+*.js.map

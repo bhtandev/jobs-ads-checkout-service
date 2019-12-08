@@ -25,7 +25,7 @@
 1. `git clone git@github.com:bhtandev/job-ads-checkout && cd job-ads-checkout` clone repository
 2. `nvm install v12.8.1` install and use right version of node
 3. `npm install` install dependencies
-5. `npm run start` start job-ads-checkout-service, viola!
+5. `npm run build:start` start job-ads-checkout-service, viola!
 6. Using a GraphQL client tool , run GrahpQL query onto ( look at usage examples [examples](#usage-examples) below)
 
    http://localhost:9087/graphql
