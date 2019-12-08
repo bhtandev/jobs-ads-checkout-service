@@ -1,0 +1,13 @@
+type LineItem {
+  # product
+  product: Product
+  # quantity
+  quantity: Int!
+}
+
+input LineItemInput {
+  # product
+  product: ProductInput!
+  # quantity
+  quantity: Int!
+}

@@ -1,0 +1,48 @@
+type Query {
+  checkout(checkoutId: ID!): Checkout
+  version: String
+}
+type Checkout {
+  id: ID!
+  lineItems: [LineItem!]!
+  total: Float!
+}
+type LineItem {
+  product: Product
+  quantity: Int!
+}
+interface Product {
+  id: ID!
+  name: String!
+  price: Float!
+}
+type Mutation {
+  createCheckout(customerId: ID!): Checkout
+  updateCheckout(customerId: ID!, checkoutInput: CheckoutRequest!): Checkout
+}
+input CheckoutRequest {
+  id: ID!
+  lineItems: [LineItemInput!]!
+}
+input LineItemInput {
+  product: ProductInput!
+  quantity: Int!
+}
+input ProductInput {
+  id: ID!
+}
+type Classic implements Product {
+  id: ID!
+  name: String!
+  price: Float!
+}
+type StandOut implements Product {
+  id: ID!
+  name: String!
+  price: Float!
+}
+type Premium implements Product {
+  id: ID!
+  name: String!
+  price: Float!
+}

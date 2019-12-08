@@ -1,0 +1,7 @@
+**/*{.,-}min.js
+node_modules
+.nyc_output
+coverage
+newrelic.js
+src/generated
+dist

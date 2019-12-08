@@ -1,0 +1,32 @@
+type Checkout {
+  # id of checkout
+  id: ID!
+
+  # line items
+  lineItems: [LineItem!]!
+
+  # total cost for whole checkout
+  total: Float!
+}
+
+input CheckoutRequest {
+  # checkout id
+  id: ID!
+
+  # line item input data
+  lineItems: [LineItemInput!]!
+}
+
+extend type Query {
+  # get checkout session by id
+  checkout(checkoutId: ID!): Checkout
+}
+
+type Mutation {
+  # create new checkout session
+  createCheckout(customerId: ID!): Checkout
+
+  # update checkout details
+  updateCheckout(customerId: ID!, checkoutInput: CheckoutRequest!) : Checkout
+}
+

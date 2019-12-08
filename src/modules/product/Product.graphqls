@@ -1,0 +1,48 @@
+interface Product {
+  # id
+  id: ID!
+
+  # name
+  name: String!
+
+  # price
+  price: Float!
+}
+
+type Classic implements Product {
+  # id
+  id: ID!
+
+  # name
+  name: String!
+
+  # price
+  price: Float!
+}
+
+type StandOut implements Product {
+  # id
+  id: ID!
+
+  # name
+  name: String!
+
+  # price
+  price: Float!
+}
+
+type Premium implements Product {
+  # id
+  id: ID!
+
+  # name
+  name: String!
+
+  # price
+  price: Float!
+}
+
+input ProductInput {
+  # product id
+  id: ID!
+}
