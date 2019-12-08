@@ -26,9 +26,11 @@
 2. `nvm install v12.8.1` install and use right version of node
 3. `npm install` install dependencies
 5. `npm run start` start job-ads-checkout-service, viola!
-6. Using a GraphQL client tool , run GrahpQL query onto ( look at usage examples below )
+6. Using a GraphQL client tool , run GrahpQL query onto ( look at usage examples [examples](#usage-examples) below)
 
    http://localhost:9087/graphql
+
+7. `npm run test` to test code!
 
 ## Architecture
 
@@ -101,6 +103,7 @@
 ## Testing
 
 ### Run Tests
+ - resides inside __tests__ directories.
  - `npm run test` - test all
  - `npm run test:unit` - run unit tests only
  - `npm run test:api` - run API tests only
