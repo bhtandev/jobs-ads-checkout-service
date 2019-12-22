@@ -15,6 +15,8 @@ export interface RuleInterface {
   discount: {
     percent?: number
     fixed?: number
+    minPurchased?: number
+    minPurchasedNewPrice?: number
   }
 }
 
@@ -43,6 +45,8 @@ const CustomerSchema: Schema = new Schema({
           // discount by fixed amount or percent deal
           percent: { type: Number },
           fixed: { type: Number },
+          minPurchased: { type: Number },
+          minPurchasedNewPrice: { type: Number },
         },
       },
     ],

@@ -1,7 +1,6 @@
 # Logs
 logs
 *.log
-*.ts
 npm-debug.log*
 output
 
@@ -51,5 +50,5 @@ test/performance/nockFixtures/
 /dist/
 /.nyc_output/
 
-*compiled.js
+*.js
 *.js.map

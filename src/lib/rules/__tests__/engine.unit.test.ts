@@ -42,7 +42,7 @@ describe('Unit: Rule Engine', (): void => {
     expect(price).to.equals(10.8)
   })
 
-  it('calculates final price with discount and xForY rules correctly', () => {
+  it('calculates final price with percentage discount and xForY rules correctly', () => {
     const lineItems: LineItemInterface[] = [
       {
         product: {
@@ -65,5 +65,30 @@ describe('Unit: Rule Engine', (): void => {
 
     const price = calculateFinalPrice(lineItems, [discountRule, xforYRule])
     expect(price).to.equals(410.8)
+  })
+
+  it('calculates final price with min purchase discount and xForY rules correctly', () => {
+    const lineItems: LineItemInterface[] = [
+      {
+        product: {
+          price: 25.4,
+          type: ProductType.PREMIUM,
+        } as ProductInterface,
+        quantity: 200,
+      },
+      {
+        product: {
+          price: 100,
+          type: ProductType.CLASSIC,
+        } as ProductInterface,
+        quantity: 5,
+      },
+    ]
+
+    const discountRule = new DiscountRule('min 50', ProductType.PREMIUM, DiscountType.MIN_PURCHASED, 15, 50)
+    const xforYRule = new XforYRule('5 for 4 discount on classic', ProductType.CLASSIC, 5, 4)
+
+    const price = calculateFinalPrice(lineItems, [discountRule, xforYRule])
+    expect(price).to.equals(3400)
   })
 })

@@ -1,9 +1,16 @@
 export enum DiscountType {
   PERCENTAGE = 'percentage',
   FIXED = 'fixed',
+  MIN_PURCHASED = 'minPurchased',
 }
 
-export function getDiscountedPrice(quantity: number, price: number, type: DiscountType, discountValue: number) {
+export function getDiscountedPrice(
+  quantity: number,
+  price: number,
+  type: DiscountType,
+  discountValue: number,
+  minPurchased?: number,
+) {
   let newPrice = price
   switch (type) {
     case DiscountType.FIXED:
@@ -11,6 +18,11 @@ export function getDiscountedPrice(quantity: number, price: number, type: Discou
       break
     case DiscountType.PERCENTAGE:
       newPrice = (price * (100 - discountValue)) / 100
+      break
+    case DiscountType.MIN_PURCHASED:
+      if (minPurchased && quantity >= minPurchased) {
+        newPrice = discountValue
+      }
       break
   }
 

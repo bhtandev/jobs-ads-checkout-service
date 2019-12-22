@@ -55,6 +55,33 @@ export const customers = [
           y: 1,
         },
       },
+      {
+        ruleType: 'discount',
+        entitledProduct: 'Classic',
+        label: 'Pay 249.99 for min 3',
+        discount: {
+          minPurchased: 3,
+          minPurchasedNewPrice: 249.99,
+        },
+      },
+    ],
+  },
+  {
+    _id: '5b53e0e3f4d7770c088a36af',
+    name: 'Jora',
+    dateAdded: '2019-07-21T12:37:21.910Z',
+    dateUpdated: '2019-07-21T19:12:05.214Z',
+    checkout: '5b534353da555265a84742b9',
+    priceRules: [
+      {
+        ruleType: 'discount',
+        entitledProduct: 'Premium',
+        label: 'Pay 379.99 for min 4',
+        discount: {
+          minPurchased: 4,
+          minPurchasedNewPrice: 379.99,
+        },
+      },
     ],
   },
 ]

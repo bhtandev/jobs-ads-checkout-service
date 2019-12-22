@@ -15,13 +15,21 @@ export class DiscountRule implements Rule {
   entitled: ProductType
   discountType: DiscountType
   discountValue: number
+  minPurchased: number
   label: string
 
-  constructor(label: string, entitled: ProductType, discountType: DiscountType, discountValue: number) {
+  constructor(
+    label: string,
+    entitled: ProductType,
+    discountType: DiscountType,
+    discountValue: number,
+    minPurchased?: number,
+  ) {
     this.label = label
     this.entitled = entitled
     this.discountType = discountType
     this.discountValue = discountValue
+    this.minPurchased = minPurchased || 0
   }
 }
 
@@ -40,12 +48,47 @@ export class XforYRule implements Rule {
   }
 }
 
+const discountTypes = [
+  {
+    test: (ruleData: RuleInterface) => ruleData.discount.fixed,
+    rule: DiscountType.FIXED,
+    getValue: (ruleData: RuleInterface) => {
+      return ruleData.discount.fixed
+    },
+  },
+  {
+    test: (ruleData: RuleInterface) => ruleData.discount.percent,
+    rule: DiscountType.PERCENTAGE,
+    getValue: (ruleData: RuleInterface) => {
+      return ruleData.discount.percent
+    },
+  },
+  {
+    test: (ruleData: RuleInterface) => ruleData.discount.minPurchased,
+    rule: DiscountType.MIN_PURCHASED,
+    getValue: (ruleData: RuleInterface) => {
+      return ruleData.discount.minPurchased
+    },
+  },
+]
+
 // rule factory
 export function createRule(ruleData: RuleInterface): Rule {
   if (ruleData.ruleType === 'discount') {
-    const discountType = ruleData.discount.fixed ? DiscountType.FIXED : DiscountType.PERCENTAGE
-    const discountValue = ruleData.discount.fixed ?? ruleData.discount.percent ?? 0
-    return new DiscountRule(ruleData.label, ruleData.entitledProduct, discountType, discountValue)
+    const discountType = discountTypes.find(item => item.test(ruleData)) || {
+      rule: DiscountType.FIXED,
+      getValue: (ruleData: RuleInterface) => 0,
+    }
+
+    const { getValue, rule } = discountType
+
+    return new DiscountRule(
+      ruleData.label,
+      ruleData.entitledProduct,
+      rule,
+      getValue(ruleData) || 0,
+      ruleData.discount.minPurchasedNewPrice || 0,
+    )
   }
 
   return new XforYRule(ruleData.label, ruleData.entitledProduct, ruleData.xForY.x, ruleData.xForY.y)
@@ -58,7 +101,13 @@ export function calculateFinalPrice(lineItems: LineItemInterface[], rules: Rule[
 
     let newPrice = 0
     if (rule instanceof DiscountRule) {
-      newPrice = getDiscountedPrice(item.quantity, item.product.price, rule.discountType, rule.discountValue)
+      newPrice = getDiscountedPrice(
+        item.quantity,
+        item.product.price,
+        rule.discountType,
+        rule.discountValue,
+        rule.minPurchased,
+      )
     }
 
     if (rule instanceof XforYRule) {
