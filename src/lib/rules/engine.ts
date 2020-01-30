@@ -1,56 +1,20 @@
 import { LineItemInterface } from '../models/checkout'
-import { DiscountType, getDiscountedPrice } from './discount'
+import { DiscountType, DiscountRule } from './discount'
+import { XforYRule } from './xForY'
 import { ProductType } from '../models/product'
-import { getXforYPrice } from './xForY'
 import { RuleInterface } from '../models/customer'
 
 export interface Rule {
   priority: number
   entitled: ProductType
   label: string
-}
 
-export class DiscountRule implements Rule {
-  priority: number
-  entitled: ProductType
-  discountType: DiscountType
-  discountValue: number
-  minPurchased: number
-  label: string
-
-  constructor(
-    label: string,
-    entitled: ProductType,
-    discountType: DiscountType,
-    discountValue: number,
-    minPurchased?: number,
-  ) {
-    this.label = label
-    this.entitled = entitled
-    this.discountType = discountType
-    this.discountValue = discountValue
-    this.minPurchased = minPurchased || 0
-  }
-}
-
-export class XforYRule implements Rule {
-  priority: number
-  entitled: ProductType
-  label: string
-  x: number
-  y: number
-
-  constructor(label: string, entitled: ProductType, x: number, y: number) {
-    this.label = label
-    this.entitled = entitled
-    this.x = x
-    this.y = y
-  }
+  calculatePrice(quantity: number, price: number): number
 }
 
 const discountTypes = [
   {
-    test: (ruleData: RuleInterface) => ruleData.discount.fixed,
+    test: (ruleData: RuleInterface): boolean => ruleData.discount.fixed !== undefined,
     rule: DiscountType.FIXED,
     getValue: (ruleData: RuleInterface) => {
       return ruleData.discount.fixed
@@ -75,9 +39,10 @@ const discountTypes = [
 // rule factory
 export function createRule(ruleData: RuleInterface): Rule {
   if (ruleData.ruleType === 'discount') {
-    const discountType = discountTypes.find(item => item.test(ruleData)) || {
-      rule: DiscountType.FIXED,
-      getValue: (ruleData: RuleInterface) => 0,
+    const discountType = discountTypes.find(item => item.test(ruleData))
+
+    if (discountType === undefined) {
+      throw new Error('Discount type is unknown!')
     }
 
     const { getValue, rule } = discountType
@@ -100,18 +65,9 @@ export function calculateFinalPrice(lineItems: LineItemInterface[], rules: Rule[
     const rule = rules.find(rule => rule.entitled === item.product.type)
 
     let newPrice = 0
-    if (rule instanceof DiscountRule) {
-      newPrice = getDiscountedPrice(
-        item.quantity,
-        item.product.price,
-        rule.discountType,
-        rule.discountValue,
-        rule.minPurchased,
-      )
-    }
 
-    if (rule instanceof XforYRule) {
-      newPrice = getXforYPrice(item.quantity, item.product.price, rule.x, rule.y)
+    if (rule) {
+      newPrice = rule.calculatePrice(item.quantity, item.product.price)
     }
 
     return acc + newPrice

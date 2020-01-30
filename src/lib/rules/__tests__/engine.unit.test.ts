@@ -2,9 +2,10 @@ import { describe, it } from 'mocha'
 import { expect } from 'chai'
 import { LineItemInterface } from '../../models/checkout'
 
-import { calculateFinalPrice, DiscountRule, XforYRule } from '../engine'
+import { calculateFinalPrice } from '../engine'
 import { ProductInterface, ProductType } from '../../models/product'
-import { DiscountType } from '../discount'
+import { DiscountType, DiscountRule } from '../discount'
+import { XforYRule } from '../xForY'
 
 describe('Unit: Rule Engine', (): void => {
   it('calculates percentage discount correctly', () => {
